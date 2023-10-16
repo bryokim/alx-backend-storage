@@ -2,7 +2,6 @@
 """Module for printing stats about Nginx logs"""
 
 from pymongo import MongoClient
-from pymongo.collection import Collection
 
 
 def get_stats():
@@ -24,7 +23,7 @@ def get_stats():
     client.close()
 
 
-def print_methods(col: Collection):
+def print_methods(col):
     """Print the methods and their counts.
 
     Args:
@@ -39,7 +38,7 @@ def print_methods(col: Collection):
         print("\tmethod {}: {}".format(method, count))
 
 
-def print_get_status(col: Collection):
+def print_get_status(col):
     """Print the number of times path status has been visited
     using the GET method.
 
@@ -51,7 +50,7 @@ def print_get_status(col: Collection):
     print("{} status check".format(count))
 
 
-def print_ips(col: Collection):
+def print_ips(col):
     """Print most frequently visited IPs with the amount of times
     visited.
 

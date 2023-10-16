@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """insert_school module"""
 
-from pymongo.collection import Collection
-from typing import Any, Dict
 
-
-def insert_school(mongo_collection: Collection, **kwargs: Dict) -> Any:
+def insert_school(mongo_collection, **kwargs):
     """Inserts a new document in a collection based on kwargs
 
     Args:

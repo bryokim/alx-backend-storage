@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """list_all module"""
 
-from pymongo.collection import Collection, Cursor
-from typing import Union, List
 
-
-def list_all(mongo_collection: Collection) -> Union[Cursor, List]:
+def list_all(mongo_collection):
     """Lists all documents in a collection
 
     Args:
@@ -17,4 +14,4 @@ def list_all(mongo_collection: Collection) -> Union[Cursor, List]:
     """
     all = mongo_collection.find()
 
-    return all or []
+    return all

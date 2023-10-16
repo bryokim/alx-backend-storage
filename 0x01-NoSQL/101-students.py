@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """top_students module"""
 
-from pymongo.collection import Collection, CommandCursor
 
-
-def top_students(mongo_collection: Collection) -> CommandCursor:
+def top_students(mongo_collection):
     """Returns all students sorted by average score
 
     Args:
