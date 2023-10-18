@@ -5,7 +5,6 @@ import redis
 
 from functools import wraps
 from typing import Any, Callable, Optional, Union
-from types import MethodType
 from uuid import uuid4
 
 
@@ -92,8 +91,6 @@ class Cache:
                 `None` is returned if the key is not found.
         """
         value = self._redis.get(key)
-        if value is None:
-            return None
 
         if fn:
             value = fn(value)
