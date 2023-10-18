@@ -136,8 +136,11 @@ def replay(fn: Any) -> None:
     count = int(r.get(name))
     print("{} was called {} times:".format(name, count))
 
-    for i in range(count):
-        input = r.lindex("{}:inputs".format(name), i).decode("utf-8")
-        output = r.lindex("{}:outputs".format(name), i).decode("utf-8")
-
-        print("{}(*{}) -> {}".format(name, input, output))
+    for input, output in zip(
+        r.lrange(f"{name}:inputs", 0, -1), r.lrange(f"{name}:outputs", 0, -1)
+    ):
+        print(
+            "{}(*{}) -> {}".format(
+                name, input.decode("utf-8"), output.decode("utf-8")
+            )
+        )
