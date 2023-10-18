@@ -20,9 +20,9 @@ def count_calls(method: Callable) -> Callable:
     """
 
     @wraps(method)
-    def wrapper(*args, **kwargs) -> Callable:
-        args[0]._redis.incr(method.__qualname__)
-        return method(*args, **kwargs)
+    def wrapper(self, *args, **kwargs) -> Callable:
+        self._redis.incr(method.__qualname__)
+        return method(self, *args, **kwargs)
 
     return wrapper
 
@@ -39,10 +39,10 @@ def call_history(method: Callable) -> Callable:
     """
 
     @wraps(method)
-    def wrapper(*args, **kwargs):
-        args[0]._redis.rpush(f"{method.__qualname__}:inputs", str(args[1:]))
-        output = method(*args, **kwargs)
-        args[0]._redis.rpush(f"{method.__qualname__}:outputs", str(output))
+    def wrapper(self, *args, **kwargs):
+        self._redis.rpush(f"{method.__qualname__}:inputs", str(args))
+        output = method(self, *args, **kwargs)
+        self._redis.rpush(f"{method.__qualname__}:outputs", str(output))
 
         return output
 
@@ -75,7 +75,7 @@ class Cache:
         return key
 
     def get(
-        self, key: str, fn: Optional[Callable[[bytes], Any]] = None
+        self, key: str, fn: Optional[Callable] = None
     ) -> Any:
         """Gets a value based on the key from the Redis server.
         If `fn` is not None, then it's used to convert the value to the
@@ -83,7 +83,7 @@ class Cache:
 
         Args:
             key (str): Key of the value to get.
-            fn (Optional[Callable[[bytes], Any]]): Callable to convert the
+            fn (Optional[Callable]): Callable to convert the
                 value to desired format.
 
         Returns:
