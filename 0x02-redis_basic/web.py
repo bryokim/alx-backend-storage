@@ -29,9 +29,14 @@ def url_count(fn: Callable) -> Callable:
             url = kwargs.get("url")
 
         cache.incr(f"count:{url}")
-        cache.expire(f"count:{url}", 10)
+        result = cache.get(f"cache:{url}")
 
-        return fn(*args, **kwargs)
+        if result:
+            return result.decode("utf-8")
+
+        result = fn(*args, **kwargs)
+        cache.setex(f"cache:{url}", 10, result)
+        return result
 
     return wrapper
 
