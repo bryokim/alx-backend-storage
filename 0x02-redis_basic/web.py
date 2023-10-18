@@ -22,19 +22,14 @@ def url_count(fn: Callable) -> Callable:
     """
 
     @wraps(fn)
-    def wrapper(*args, **kwargs) -> str:
-        if args:
-            url = args[0]
-        elif kwargs:
-            url = kwargs.get("url")
-
+    def wrapper(url) -> str:
         cache.incr(f"count:{url}")
         cached_result = cache.get(f"cache:{url}")
 
         if cached_result:
             return cached_result.decode("utf-8")
 
-        result = fn(*args, **kwargs)
+        result = fn(url)
         cache.setex(f"cache:{url}", 10, result)
         return result
 
