@@ -60,7 +60,7 @@ class Cache:
 
     @call_history
     @count_calls
-    def store(self, data: Union[str, int, float, bytes]) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data in Redis using a random key and returns the key.
 
         Args:
